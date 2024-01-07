@@ -1,0 +1,49 @@
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const { ObjectId } = require('mongodb');
+// token hashing key
+const key = "7395592833c5596f3acb166837f129ab11246f4c4baf55aadde5c3b0d5329a26"
+const mongoose = require('mongoose');
+
+
+const auth = async (req, res, next) => {
+    try {
+        //get token from header
+        const token = req.header('Authorization');
+
+
+
+        //check existance of token
+        if (!token || !token.startsWith('Bearer ')) {
+            throw new Error('No token provided');
+        }
+        //remove bearer from token
+        const tokenWithoutBearer = token.slice(7);
+        //decode token
+        const decoded = jwt.verify(tokenWithoutBearer, key);
+
+
+        //convert token to objectid  type
+        const objectId = new ObjectId(decoded._id);
+
+
+
+        //search for user
+        const user = await User.find({ _id: objectId, token });
+
+        //check user existance
+        if (!user) {
+            res.status(401).json({ error: 'Authentication failed, User not found' });
+        }
+        //append token to request
+        req.token = token;
+        req.user = user;
+        next();
+    } catch (error) {
+
+
+        res.status(401).json({ error: 'Authentication failed' });
+    }
+};
+
+module.exports = auth;
