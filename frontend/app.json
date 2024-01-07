@@ -23,14 +23,19 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.company",
-      "config":{
-        "googleMaps":{
-          "apiKey":"AIzaSyD7feBeEywtTQeVc3scF1k1u1NmcUvcrdA"
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD7feBeEywtTQeVc3scF1k1u1NmcUvcrdA"
         }
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "84c2832d-a5df-44b5-aaf7-2218f842d7f1"
+      }
     }
   }
 }
